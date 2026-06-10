@@ -132,7 +132,7 @@ where
     }
 
     // Retrieve a reference to an element using its index
-    pub fn get(&self, chunk_index: usize, element_index: usize) -> Option<core::cell::Ref<T>> {
+    pub fn get(&self, chunk_index: usize, element_index: usize) -> Option<core::cell::Ref<'_, T>> {
         let chunks = self.chunks.borrow();
 
         // Ensure the chunk_index and element_index are within bounds
@@ -141,6 +141,25 @@ where
                 // Return a Ref to the item, borrowing the entire chunk immutably
                 Some(core::cell::Ref::map(chunks, move |c| {
                     &c[chunk_index][element_index]
+                }))
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    // Retrieve a mutable reference to an element using its index
+    pub fn get_mut(&self, chunk_index: usize, element_index: usize) -> Option<core::cell::RefMut<'_, T>> {
+        let mut chunks = self.chunks.borrow_mut();
+
+        // Ensure the chunk_index and element_index are within bounds
+        if let Some(chunk) = chunks.get_mut(chunk_index) {
+            if element_index < chunk.len() {
+                // Return a RefMut to the item, borrowing the entire chunk mutably
+                Some(core::cell::RefMut::map(chunks, move |c| {
+                    &mut c[chunk_index][element_index]
                 }))
             } else {
                 None
