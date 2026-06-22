@@ -53,6 +53,16 @@ pub mod sequencer {
             self.offset
         }
 
+        /// Get the step (stride) of this [`Sequencer`].
+        pub fn step(&self) -> u32 {
+            self.step
+        }
+
+        /// Get the maximum doc ID of this [`Sequencer`].
+        pub fn max_id(&self) -> u32 {
+            self.max
+        }
+
         pub fn free(&self) -> u32 {
             self.max.saturating_sub(self.offset)
         }
