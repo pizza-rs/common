@@ -68,6 +68,19 @@ pub mod sequencer {
         }
     }
 
+    impl Sequencer {
+        /// Advance the sequencer so that its next allocation is strictly
+        /// above `min`.  Used to skip past doc IDs that already exist
+        /// (e.g. after WAL replay).
+        pub fn advance_past(&mut self, min: u32) {
+            if self.offset <= min {
+                // Jump to the first value in this sequence that exceeds min.
+                let steps_needed = (min - self.offset) / self.step + 1;
+                self.offset += steps_needed * self.step;
+            }
+        }
+    }
+
     impl Iterator for Sequencer {
         type Item = u32;
 
