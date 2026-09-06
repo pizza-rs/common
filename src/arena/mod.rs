@@ -151,7 +151,11 @@ where
     }
 
     // Retrieve a mutable reference to an element using its index
-    pub fn get_mut(&self, chunk_index: usize, element_index: usize) -> Option<core::cell::RefMut<'_, T>> {
+    pub fn get_mut(
+        &self,
+        chunk_index: usize,
+        element_index: usize,
+    ) -> Option<core::cell::RefMut<'_, T>> {
         let mut chunks = self.chunks.borrow_mut();
 
         // Ensure the chunk_index and element_index are within bounds
