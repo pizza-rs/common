@@ -155,7 +155,8 @@ impl<T> Arena<T> {
     pub fn snapshot(&mut self) -> usize {
         let last_chunk_index = self.chunks.len() - 1;
         let last_chunk_len = self.chunks[last_chunk_index].len();
-        self.snapshot_offsets.push((last_chunk_index, last_chunk_len));
+        self.snapshot_offsets
+            .push((last_chunk_index, last_chunk_len));
         self.snapshot_offsets.len() - 1 // Return the snapshot ID
     }
 
